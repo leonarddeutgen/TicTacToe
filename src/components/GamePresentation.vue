@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from "vue";
 interface playerTurn {
   playerTurn: boolean;
   box: number;
 }
 
+const userSymbol = ref("");
 const props = defineProps<playerTurn>();
 
 const emit = defineEmits<{
@@ -13,17 +15,19 @@ const emit = defineEmits<{
 const handleClick = () => {
   if (props.playerTurn === true) {
     console.log("Den är trueee");
+    userSymbol.value = "X";
 
     emit("switchTurn");
   } else {
     console.log("den är false");
+    userSymbol.value = "O";
     emit("switchTurn");
   }
 };
 </script>
 
 <template>
-  <div class="box" @click="handleClick"></div>
+  <div class="box" @click="handleClick">{{ userSymbol }}</div>
 </template>
 
 <style scoped lang="scss">
@@ -31,6 +35,11 @@ const handleClick = () => {
   height: 10rem;
   border: 1px solid black;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
 
   &:hover {
     border-color: #646cff;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Player } from "../models/Player";
 import GamePresentation from "./GamePresentation.vue";
+import { ref } from "vue";
 //const gameBoxes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 interface playerProps {
   player: Player[];
