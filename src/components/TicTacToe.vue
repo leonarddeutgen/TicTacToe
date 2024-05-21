@@ -8,18 +8,8 @@ import Game from "./Game.vue";
 const state = ref<TicTacState>({
   playerList: [],
   playerxTurn: false,
+  turnOffGame: true,
 });
-
-const winCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [2, 4, 6],
-  [0, 4, 8],
-];
 
 const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
@@ -31,7 +21,9 @@ const switchTurn = () => {
   state.value.playerxTurn = !state.value.playerxTurn;
 };
 
-const checkWinner = () => {};
+const turnOffGame = () => {
+  state.value.turnOffGame = false;
+};
 </script>
 
 <template>
@@ -44,7 +36,9 @@ const checkWinner = () => {};
     v-else
     :player="state.playerList"
     :playerx-turn="state.playerxTurn"
+    :turn-off-game="state.turnOffGame"
     @switch-turn="switchTurn"
+    @turnoff-game="turnOffGame"
   ></Game>
 </template>
 

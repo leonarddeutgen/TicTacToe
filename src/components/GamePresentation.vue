@@ -2,7 +2,9 @@
 import { ref } from "vue";
 interface playerTurn {
   playerTurn: boolean;
-  box: number;
+  turnOffGame: boolean;
+  box: string | null;
+  index: number;
 }
 
 const currentPlayerSymbol = ref("");
@@ -10,19 +12,24 @@ const props = defineProps<playerTurn>();
 
 const emit = defineEmits<{
   (e: "switchTurn"): void;
+  (e: "handleBoxValue", currentSymbol: string): void;
 }>();
 
 const handleClick = () => {
-  if (props.playerTurn === true && currentPlayerSymbol.value != "O") {
-    console.log("Den är trueee");
-    currentPlayerSymbol.value = "X";
+  //Kollar om speler ät igång
+  if (props.turnOffGame === true) {
+    if (props.playerTurn === true && currentPlayerSymbol.value != "O") {
+      currentPlayerSymbol.value = "X";
 
-    emit("switchTurn");
-  }
-  if (props.playerTurn === false && currentPlayerSymbol.value != "X") {
-    console.log("den är false");
-    currentPlayerSymbol.value = "O";
-    emit("switchTurn");
+      emit("handleBoxValue", currentPlayerSymbol.value);
+      emit("switchTurn");
+    }
+    if (props.playerTurn === false && currentPlayerSymbol.value != "X") {
+      currentPlayerSymbol.value = "O";
+
+      emit("handleBoxValue", currentPlayerSymbol.value);
+      emit("switchTurn");
+    }
   }
 };
 </script>
