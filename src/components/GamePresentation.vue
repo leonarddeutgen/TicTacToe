@@ -5,7 +5,7 @@ interface playerTurn {
   box: number;
 }
 
-const userSymbol = ref("");
+const currentPlayerSymbol = ref("");
 const props = defineProps<playerTurn>();
 
 const emit = defineEmits<{
@@ -13,21 +13,22 @@ const emit = defineEmits<{
 }>();
 
 const handleClick = () => {
-  if (props.playerTurn === true) {
+  if (props.playerTurn === true && currentPlayerSymbol.value != "O") {
     console.log("Den är trueee");
-    userSymbol.value = "X";
+    currentPlayerSymbol.value = "X";
 
     emit("switchTurn");
-  } else {
+  }
+  if (props.playerTurn === false && currentPlayerSymbol.value != "X") {
     console.log("den är false");
-    userSymbol.value = "O";
+    currentPlayerSymbol.value = "O";
     emit("switchTurn");
   }
 };
 </script>
 
 <template>
-  <div class="box" @click="handleClick">{{ userSymbol }}</div>
+  <div class="box" @click="handleClick">{{ currentPlayerSymbol }}</div>
 </template>
 
 <style scoped lang="scss">
