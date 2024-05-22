@@ -24,7 +24,11 @@ const handleBoxValue = (index: number, currentSymbol: string) => {
 
     if (checkWinner(currentSymbol, gameBoxes.value as string[])) {
       console.log(currentSymbol, "Har Vunnit");
+
       emit("turnoffGame");
+    }
+    if (checkDraw(gameBoxes.value as string[])) {
+      console.log(" Oavgjort!!!!!!!!");
     } else {
       emit("switchTurn");
     }
@@ -42,13 +46,21 @@ const winCombinations = [
   [0, 4, 8],
 ];
 
-const checkWinner = (currentSymbol: string, boxList: Array<string | null>) => {
+const checkWinner = (currentSymbol: string, boxList: Array<string>) => {
   return winCombinations.some((combination) => {
     const result = combination.every((index) => {
       return boxList[index] === currentSymbol;
     });
     return result;
   });
+};
+
+const checkDraw = (boxList: Array<string>) => {
+  const result = boxList.every((index) => {
+    console.log(index === "X" || index === "O");
+    return index === "X" || index === "O";
+  });
+  return result;
 };
 </script>
 
