@@ -2,14 +2,13 @@
 import { ref } from "vue";
 interface playerTurn {
   playerTurn: boolean;
-  turnOffGame: boolean;
+  gameIsRunning: boolean;
   box: string | null;
   index: number;
 }
 
 const currentPlayerSymbol = ref("");
 const props = defineProps<playerTurn>();
-
 const emit = defineEmits<{
   (e: "switchTurn"): void;
   (e: "handleBoxValue", currentSymbol: string): void;
@@ -17,7 +16,7 @@ const emit = defineEmits<{
 
 const handleClick = () => {
   //Kollar om speler ät igång
-  if (props.turnOffGame === true) {
+  if (props.gameIsRunning === true) {
     if (props.playerTurn === true && currentPlayerSymbol.value != "O") {
       currentPlayerSymbol.value = "X";
 

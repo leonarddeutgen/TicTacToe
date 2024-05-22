@@ -1,21 +1,27 @@
 <script setup lang="ts">
 import { Player } from "../models/Player";
 import GamePresentation from "./GamePresentation.vue";
+import Buttons from "./Buttons.vue";
 import { ref } from "vue";
 
 interface playerProps {
   player: Player[];
   playerxTurn: boolean;
-  turnOffGame: boolean;
+  gameIsRunning: boolean;
+  someoneWon: boolean;
 }
 defineProps<playerProps>();
 
 const emit = defineEmits<{
   (e: "switchTurn"): void;
   (e: "turnoffGame"): void;
+  (e: "handleWinner"): void;
+  (e: "handleStartOver"): void;
 }>();
 
 let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
+
+let winnerSymbol = ref("");
 
 const handleBoxValue = (index: number, currentSymbol: string) => {
   if (!gameBoxes.value[index]) {
@@ -24,7 +30,9 @@ const handleBoxValue = (index: number, currentSymbol: string) => {
 
     if (checkWinner(currentSymbol, gameBoxes.value as string[])) {
       console.log(currentSymbol, "Har Vunnit");
+      winnerSymbol.value = currentSymbol + " Har vunnit";
 
+      emit("handleWinner");
       emit("turnoffGame");
     }
     if (checkDraw(gameBoxes.value as string[])) {
@@ -57,7 +65,6 @@ const checkWinner = (currentSymbol: string, boxList: Array<string>) => {
 
 const checkDraw = (boxList: Array<string>) => {
   const result = boxList.every((index) => {
-    console.log(index === "X" || index === "O");
     return index === "X" || index === "O";
   });
   return result;
@@ -65,22 +72,40 @@ const checkDraw = (boxList: Array<string>) => {
 </script>
 
 <template>
-  <h2>{{ player[0].name }} VS {{ player[1].name }}</h2>
-  <h3>{{ playerxTurn ? "Spelare X tur" : "Spelare O tur" }}</h3>
+  <section class="messageBox">
+    <div v-if="!someoneWon" class="messageBox--running">
+      <h2>{{ player[0].name }} VS {{ player[1].name }}</h2>
+      <h3>{{ playerxTurn ? "Spelare X tur" : "Spelare O tur" }}</h3>
+    </div>
+    <div v-else class="messageBox--done">
+      <h3>{{ winnerSymbol }}</h3>
+    </div>
+  </section>
   <section class="gameBoard">
     <GamePresentation
       v-for="(box, index) in gameBoxes"
       :player-turn="playerxTurn"
-      :turn-off-game="turnOffGame"
+      :game-is-running="gameIsRunning"
       :box="box"
       :index="index"
       @switch-turn="$emit('switchTurn')"
       @handle-box-value="(currentSymbol:string) => handleBoxValue(index, currentSymbol)"
     ></GamePresentation>
   </section>
+  <Buttons
+    v-if="someoneWon"
+    @handle-start-over="$emit('handleStartOver')"
+  ></Buttons>
 </template>
 
 <style scoped lang="scss">
+.messageBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10rem;
+}
+
 .gameBoard {
   width: 30rem;
   display: grid;
