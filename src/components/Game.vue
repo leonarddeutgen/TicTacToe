@@ -4,6 +4,7 @@ import GamePresentation from "./GamePresentation.vue";
 import Buttons from "./Buttons.vue";
 import ScoreTracker from "./ScoreTracker.vue";
 import { ref } from "vue";
+import { watchEffect } from "vue";
 
 interface playerProps {
   player: Player[];
@@ -24,7 +25,6 @@ const emit = defineEmits<{
   (e: "handleNewGame", gameBoxesList: string[]): void;
 }>();
 
-//let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
 let message = ref("");
 let currentSymbol: string;
 
@@ -61,6 +61,12 @@ const handleBoxValue = (index: number) => {
     }
   }
 };
+watchEffect(() => {
+  window.localStorage.setItem(
+    "gameBoardList",
+    JSON.stringify(props.gameBoardList)
+  );
+});
 
 const winCombinations = [
   [0, 1, 2],

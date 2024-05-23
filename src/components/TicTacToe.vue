@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UserSetUp from "./UserSetUp.vue";
 import { TicTacState } from "./../models/TicTacState";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Player } from "../models/Player";
 import Game from "./Game.vue";
 
@@ -14,12 +14,40 @@ const state = ref<TicTacState>({
   someoneWon: false,
   isDraw: false,
 });
-
 state.value.gameBoardList = ["", "", "", "", "", "", "", "", ""];
+
+const storagePlayerList = window.localStorage.getItem("playerList");
+const storedBoardList = window.localStorage.getItem("gameBoardList");
+const storedplayerTurn = window.localStorage.getItem("playerTurn");
+
+if (storagePlayerList) {
+  state.value.playerList = JSON.parse(storagePlayerList);
+}
+
+if (storedBoardList) {
+  state.value.gameBoardList = JSON.parse(storedBoardList);
+}
+
+if (storedplayerTurn) {
+  state.value.playerxTurn = JSON.parse(storedplayerTurn);
+}
 
 const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
-  console.log(state.value.playerList);
+};
+
+const savePlayerListToLocalStorage = () => {
+  window.localStorage.setItem(
+    "playerList",
+    JSON.stringify(state.value.playerList)
+  );
+};
+
+const savePlayerTurnToLocalStorage = () => {
+  window.localStorage.setItem(
+    "playerTurn",
+    JSON.stringify(state.value.playerxTurn)
+  );
 };
 
 const reset = () => {
@@ -38,8 +66,10 @@ const newGame = () => {
     reset();
   } else if (state.value.playerxTurn) {
     state.value.playerList[0].score += 1;
+    savePlayerListToLocalStorage();
   } else {
     state.value.playerList[1].score += 1;
+    savePlayerListToLocalStorage();
   }
   reset();
 };
@@ -47,6 +77,7 @@ const newGame = () => {
 const switchTurn = () => {
   //If true = Player X turn
   state.value.playerxTurn = !state.value.playerxTurn;
+  savePlayerTurnToLocalStorage();
 };
 
 const turnOffGame = () => {
