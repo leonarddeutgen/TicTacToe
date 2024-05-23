@@ -7,20 +7,24 @@ import Game from "./Game.vue";
 
 const state = ref<TicTacState>({
   playerList: [],
+  gameBoardList: [],
   playerxTurn: false,
+  playerSymbol: "",
   gameIsRunning: true,
   someoneWon: false,
 });
+
+state.value.gameBoardList = ["", "", "", "", "", "", "", "", ""];
 
 const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
   console.log(state.value.playerList);
 };
 
-const newGame = (gameBoxes: string[]) => {
+const newGame = () => {
   //Nollställ boxValue
-  for (let i = 0; i < gameBoxes.length; i++) {
-    gameBoxes[i] = "";
+  for (let i = 0; i < state.value.gameBoardList.length; i++) {
+    state.value.gameBoardList[i] = "";
   }
 
   if (state.value.playerxTurn) {
@@ -47,6 +51,9 @@ const winToggle = () => {
 };
 
 const startOver = () => {
+  for (let i = 0; i < state.value.gameBoardList.length; i++) {
+    state.value.gameBoardList[i] = "";
+  }
   state.value.playerList = [];
   state.value.gameIsRunning = true;
   state.value.someoneWon = false;
@@ -62,7 +69,9 @@ const startOver = () => {
   <Game
     v-else
     :player="state.playerList"
+    :game-board-list="state.gameBoardList"
     :playerx-turn="state.playerxTurn"
+    :player-symbol="state.playerSymbol"
     :game-is-running="state.gameIsRunning"
     :someone-won="state.someoneWon"
     @switch-turn="switchTurn"

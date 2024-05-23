@@ -6,11 +6,13 @@ import { ref } from "vue";
 
 interface playerProps {
   player: Player[];
+  gameBoardList: string[];
   playerxTurn: boolean;
+  playerSymbol: string;
   gameIsRunning: boolean;
   someoneWon: boolean;
 }
-defineProps<playerProps>();
+const props = defineProps<playerProps>();
 
 const emit = defineEmits<{
   (e: "switchTurn"): void;
@@ -20,20 +22,31 @@ const emit = defineEmits<{
   (e: "handleNewGame", gameBoxesList: string[]): void;
 }>();
 
-let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
+//let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
 let message = ref("");
+let currentSymbol: string;
 
-const handleBoxValue = (index: number, currentSymbol: string) => {
-  if (!gameBoxes.value[index]) {
-    gameBoxes.value[index] = currentSymbol;
+const handleBoxValue = (index: number) => {
+  console.log(props.playerxTurn);
+
+  if (props.playerxTurn) {
+    currentSymbol = "X";
+    console.log(currentSymbol);
+  }
+  if (!props.playerxTurn) {
+    currentSymbol = "O";
+  }
+
+  if (!props.gameBoardList[index]) {
+    props.gameBoardList[index] = currentSymbol;
     emit("switchTurn");
 
-    if (checkWinner(currentSymbol, gameBoxes.value as string[])) {
+    if (checkWinner(currentSymbol, props.gameBoardList as string[])) {
       message.value = currentSymbol + " Har vunnit";
 
       emit("handleWinner");
       emit("turnoffGame");
-    } else if (checkDraw(gameBoxes.value as string[])) {
+    } else if (checkDraw(props.gameBoardList as string[])) {
       message.value = "Oavgjort!";
       emit("handleWinner");
     } else {
@@ -83,19 +96,20 @@ const checkDraw = (boxList: Array<string>) => {
   </section>
   <section class="gameBoard">
     <GamePresentation
-      v-for="(box, index) in gameBoxes"
+      v-for="(box, index) in gameBoardList"
       :player-turn="playerxTurn"
+      :player-symbol="playerSymbol"
       :game-is-running="gameIsRunning"
       :box="box"
       :index="index"
       @switch-turn="$emit('switchTurn')"
-      @handle-box-value="(currentSymbol:string) => handleBoxValue(index, currentSymbol)"
+      @handle-box-value="handleBoxValue(index)"
     ></GamePresentation>
   </section>
   <Buttons
     v-if="someoneWon"
     @handle-start-over="$emit('handleStartOver')"
-    @handle-new-game="$emit('handleNewGame', gameBoxes)"
+    @handle-new-game="$emit('handleNewGame', gameBoardList)"
   ></Buttons>
 </template>
 
