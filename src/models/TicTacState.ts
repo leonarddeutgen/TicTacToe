@@ -7,4 +7,5 @@ export interface TicTacState {
   playerSymbol: string;
   gameIsRunning: boolean;
   someoneWon: boolean;
+  isDraw: boolean;
 }

@@ -19,6 +19,7 @@ const emit = defineEmits<{
   (e: "switchTurn"): void;
   (e: "turnoffGame"): void;
   (e: "handleWinner"): void;
+  (e: "handleDraw"): void;
   (e: "handleStartOver"): void;
   (e: "handleNewGame", gameBoxesList: string[]): void;
 }>();
@@ -28,11 +29,15 @@ let message = ref("");
 let currentSymbol: string;
 
 const handleBoxValue = (index: number) => {
-  console.log(props.playerxTurn);
+  if (
+    props.gameBoardList[index] === "X" ||
+    props.gameBoardList[index] === "O"
+  ) {
+    return;
+  }
 
   if (props.playerxTurn) {
     currentSymbol = "X";
-    console.log(currentSymbol);
   }
   if (!props.playerxTurn) {
     currentSymbol = "O";
@@ -50,6 +55,7 @@ const handleBoxValue = (index: number) => {
     } else if (checkDraw(props.gameBoardList as string[])) {
       message.value = "Oavgjort!";
       emit("handleWinner");
+      emit("handleDraw");
     } else {
       emit("switchTurn");
     }

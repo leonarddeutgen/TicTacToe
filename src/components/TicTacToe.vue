@@ -12,6 +12,7 @@ const state = ref<TicTacState>({
   playerSymbol: "",
   gameIsRunning: true,
   someoneWon: false,
+  isDraw: false,
 });
 
 state.value.gameBoardList = ["", "", "", "", "", "", "", "", ""];
@@ -21,20 +22,26 @@ const createNewPlayer = (playerName: string) => {
   console.log(state.value.playerList);
 };
 
+const reset = () => {
+  state.value.someoneWon = false;
+  state.value.gameIsRunning = true;
+  state.value.isDraw = false;
+};
+
 const newGame = () => {
   //Nollställ boxValue
   for (let i = 0; i < state.value.gameBoardList.length; i++) {
     state.value.gameBoardList[i] = "";
   }
 
-  if (state.value.playerxTurn) {
+  if (state.value.isDraw) {
+    reset();
+  } else if (state.value.playerxTurn) {
     state.value.playerList[0].score += 1;
   } else {
     state.value.playerList[1].score += 1;
   }
-  console.log(state.value.playerList);
-  state.value.someoneWon = false;
-  state.value.gameIsRunning = true;
+  reset();
 };
 
 const switchTurn = () => {
@@ -48,6 +55,10 @@ const turnOffGame = () => {
 
 const winToggle = () => {
   state.value.someoneWon = true;
+};
+
+const drawToggle = () => {
+  state.value.isDraw = true;
 };
 
 const startOver = () => {
@@ -76,6 +87,7 @@ const startOver = () => {
     :someone-won="state.someoneWon"
     @switch-turn="switchTurn"
     @handle-winner="winToggle"
+    @handle-draw="drawToggle"
     @turnoff-game="turnOffGame"
     @handle-start-over="startOver"
     @handle-new-game="newGame"
