@@ -31,10 +31,17 @@ if (storedBoardList) {
 if (storedplayerTurn) {
   state.value.playerxTurn = JSON.parse(storedplayerTurn);
 }
-
 const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
 };
+
+watch(
+  () => state.value.playerList,
+  (value) => {
+    window.localStorage.setItem("playerList", JSON.stringify(value));
+  },
+  { deep: true }
+);
 
 const savePlayerListToLocalStorage = () => {
   window.localStorage.setItem(
