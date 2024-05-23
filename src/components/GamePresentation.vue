@@ -24,15 +24,15 @@ const handleClick = () => {
       return;
     }
 
-    let updateSumbol;
+    let updateSymbol;
     if (props.playerTurn && currentPlayerSymbol.value != "X") {
-      updateSumbol = "X";
+      updateSymbol = "X";
     } else if (!props.playerTurn && currentPlayerSymbol.value != "O") {
-      updateSumbol = "O";
+      updateSymbol = "O";
     }
 
-    if (updateSumbol) {
-      currentPlayerSymbol.value = updateSumbol;
+    if (updateSymbol) {
+      currentPlayerSymbol.value = updateSymbol;
       emit("handleBoxValue", currentPlayerSymbol.value);
       emit("switchTurn");
     }

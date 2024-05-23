@@ -17,6 +17,22 @@ const createNewPlayer = (playerName: string) => {
   console.log(state.value.playerList);
 };
 
+const newGame = (gameBoxes: string[]) => {
+  //Nollställ boxValue
+  for (let i = 0; i < gameBoxes.length; i++) {
+    gameBoxes[i] = "";
+  }
+
+  if (state.value.playerxTurn) {
+    state.value.playerList[0].score += 1;
+  } else {
+    state.value.playerList[1].score += 1;
+  }
+  console.log(state.value.playerList);
+  state.value.someoneWon = false;
+  state.value.gameIsRunning = true;
+};
+
 const switchTurn = () => {
   //If true = Player X turn
   state.value.playerxTurn = !state.value.playerxTurn;
@@ -53,6 +69,7 @@ const startOver = () => {
     @handle-winner="winToggle"
     @turnoff-game="turnOffGame"
     @handle-start-over="startOver"
+    @handle-new-game="newGame"
   ></Game>
 </template>
 

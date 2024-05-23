@@ -17,10 +17,10 @@ const emit = defineEmits<{
   (e: "turnoffGame"): void;
   (e: "handleWinner"): void;
   (e: "handleStartOver"): void;
+  (e: "handleNewGame", gameBoxesList: string[]): void;
 }>();
 
 let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
-
 let message = ref("");
 
 const handleBoxValue = (index: number, currentSymbol: string) => {
@@ -58,6 +58,7 @@ const checkWinner = (currentSymbol: string, boxList: Array<string>) => {
     const result = combination.every((index) => {
       return boxList[index] === currentSymbol;
     });
+
     return result;
   });
 };
@@ -94,6 +95,7 @@ const checkDraw = (boxList: Array<string>) => {
   <Buttons
     v-if="someoneWon"
     @handle-start-over="$emit('handleStartOver')"
+    @handle-new-game="$emit('handleNewGame', gameBoxes)"
   ></Buttons>
 </template>
 
