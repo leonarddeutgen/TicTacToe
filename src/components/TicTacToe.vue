@@ -16,6 +16,7 @@ const state = ref<TicTacState>({
 });
 state.value.gameBoardList = ["", "", "", "", "", "", "", "", ""];
 
+//Local Storage
 const storagePlayerList = window.localStorage.getItem("playerList");
 const storedBoardList = window.localStorage.getItem("gameBoardList");
 const storedplayerTurn = window.localStorage.getItem("playerTurn");
@@ -57,6 +58,7 @@ const savePlayerTurnToLocalStorage = () => {
   );
 };
 
+// Game Functions
 const reset = () => {
   state.value.someoneWon = false;
   state.value.gameIsRunning = true;
