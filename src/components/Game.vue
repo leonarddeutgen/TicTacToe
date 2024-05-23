@@ -21,7 +21,7 @@ const emit = defineEmits<{
 
 let gameBoxes = ref(["", "", "", "", "", "", "", "", ""]);
 
-let winnerSymbol = ref("");
+let message = ref("");
 
 const handleBoxValue = (index: number, currentSymbol: string) => {
   if (!gameBoxes.value[index]) {
@@ -29,14 +29,13 @@ const handleBoxValue = (index: number, currentSymbol: string) => {
     emit("switchTurn");
 
     if (checkWinner(currentSymbol, gameBoxes.value as string[])) {
-      console.log(currentSymbol, "Har Vunnit");
-      winnerSymbol.value = currentSymbol + " Har vunnit";
+      message.value = currentSymbol + " Har vunnit";
 
       emit("handleWinner");
       emit("turnoffGame");
-    }
-    if (checkDraw(gameBoxes.value as string[])) {
-      console.log(" Oavgjort!!!!!!!!");
+    } else if (checkDraw(gameBoxes.value as string[])) {
+      message.value = "Oavgjort!";
+      emit("handleWinner");
     } else {
       emit("switchTurn");
     }
@@ -78,7 +77,7 @@ const checkDraw = (boxList: Array<string>) => {
       <h3>{{ playerxTurn ? "Spelare X tur" : "Spelare O tur" }}</h3>
     </div>
     <div v-else class="messageBox--done">
-      <h3>{{ winnerSymbol }}</h3>
+      <h3>{{ message }}</h3>
     </div>
   </section>
   <section class="gameBoard">
