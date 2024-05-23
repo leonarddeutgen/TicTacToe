@@ -2,6 +2,7 @@
 import { Player } from "../models/Player";
 import GamePresentation from "./GamePresentation.vue";
 import Buttons from "./Buttons.vue";
+import ScoreTracker from "./ScoreTracker.vue";
 import { ref } from "vue";
 
 interface playerProps {
@@ -85,6 +86,9 @@ const checkDraw = (boxList: Array<string>) => {
 </script>
 
 <template>
+  <section class="scoreBox">
+    <ScoreTracker v-for="score in player" :score="score"></ScoreTracker>
+  </section>
   <section class="messageBox">
     <div v-if="!someoneWon" class="messageBox--running">
       <h2>{{ player[0].name }} VS {{ player[1].name }}</h2>
@@ -114,6 +118,14 @@ const checkDraw = (boxList: Array<string>) => {
 </template>
 
 <style scoped lang="scss">
+.scoreBox {
+  height: 2rem;
+  border: 1px solid;
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+}
 .messageBox {
   display: flex;
   align-items: center;
