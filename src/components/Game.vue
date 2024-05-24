@@ -29,44 +29,47 @@ let message = ref("");
 let currentSymbol: string;
 
 const handleBoxValue = (index: number) => {
-  if (
-    props.gameBoardList[index] === "X" ||
-    props.gameBoardList[index] === "O"
-  ) {
-    return;
-  }
+  if (props.gameIsRunning) {
+    if (
+      props.gameBoardList[index] === "X" ||
+      props.gameBoardList[index] === "O"
+    ) {
+      return;
+    }
 
-  if (props.playerxTurn) {
-    currentSymbol = "X";
-  }
-  if (!props.playerxTurn) {
-    currentSymbol = "O";
-  }
+    if (props.playerxTurn) {
+      currentSymbol = "X";
+    }
+    if (!props.playerxTurn) {
+      currentSymbol = "O";
+    }
 
-  if (!props.gameBoardList[index]) {
-    props.gameBoardList[index] = currentSymbol;
-    //emit("switchTurn");
+    if (!props.gameBoardList[index]) {
+      props.gameBoardList[index] = currentSymbol;
+      //emit("switchTurn");
 
-    if (checkWinner(currentSymbol, props.gameBoardList as string[])) {
-      message.value = currentSymbol + " Har vunnit";
+      if (checkWinner(currentSymbol, props.gameBoardList as string[])) {
+        message.value = currentSymbol + " Har vunnit";
 
-      emit("handleWinner");
-      emit("turnoffGame");
-    } else if (checkDraw(props.gameBoardList as string[])) {
-      message.value = "Oavgjort!";
-      emit("handleWinner");
-      emit("handleDraw");
-    } else {
-      emit("switchTurn");
+        emit("handleWinner");
+        emit("turnoffGame");
+      } else if (checkDraw(props.gameBoardList as string[])) {
+        message.value = "Oavgjort!";
+        emit("handleWinner");
+        emit("handleDraw");
+      } else {
+        emit("switchTurn");
+      }
     }
   }
 };
-watchEffect(() => {
-  window.localStorage.setItem(
-    "gameBoardList",
-    JSON.stringify(props.gameBoardList)
-  );
-});
+
+// watchEffect(() => {
+//   window.localStorage.setItem(
+//     "gameBoardList",
+//     JSON.stringify(props.gameBoardList)
+//   );
+// });
 
 const winCombinations = [
   [0, 1, 2],

@@ -15,16 +15,16 @@ const emit = defineEmits<{
   (e: "handleBoxValue"): void;
 }>();
 
-const handleClick = () => {
-  if (props.gameIsRunning) {
-    emit("handleBoxValue");
-    //emit("switchTurn");
-  }
-};
+// const handleClick = () => {
+//   if (props.gameIsRunning) {
+//     emit("handleBoxValue");
+//     //emit("switchTurn");
+//   }
+// };
 </script>
 
 <template>
-  <div class="box" @click="handleClick">{{ box }}</div>
+  <div class="box" @click="$emit('handleBoxValue')">{{ box }}</div>
 </template>
 
 <style scoped lang="scss">

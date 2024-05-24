@@ -4,6 +4,7 @@ import { TicTacState } from "./../models/TicTacState";
 import { ref, watch } from "vue";
 import { Player } from "../models/Player";
 import Game from "./Game.vue";
+import { watchEffect } from "vue";
 
 const state = ref<TicTacState>({
   playerList: [],
@@ -36,15 +37,6 @@ const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
 };
 
-//Håll koll på PlayerList
-watch(
-  () => state.value.playerList,
-  (value) => {
-    window.localStorage.setItem("playerList", JSON.stringify(value));
-  },
-  { deep: true }
-);
-
 const savePlayerListToLocalStorage = () => {
   window.localStorage.setItem(
     "playerList",
@@ -58,6 +50,15 @@ const savePlayerTurnToLocalStorage = () => {
     JSON.stringify(state.value.playerxTurn)
   );
 };
+
+//Håll koll på PlayerList object
+watch(
+  () => state.value.playerList,
+  (value) => {
+    window.localStorage.setItem("playerList", JSON.stringify(value));
+  },
+  { deep: true }
+);
 
 // Game Functions
 const reset = () => {
@@ -106,10 +107,19 @@ const startOver = () => {
   for (let i = 0; i < state.value.gameBoardList.length; i++) {
     state.value.gameBoardList[i] = "";
   }
+
   state.value.playerList = [];
   state.value.gameIsRunning = true;
   state.value.someoneWon = false;
 };
+
+//Håll koll på gameBoardList
+watchEffect(() => {
+  window.localStorage.setItem(
+    "gameBoardList",
+    JSON.stringify(state.value.gameBoardList)
+  );
+});
 </script>
 
 <template>
