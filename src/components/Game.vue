@@ -10,7 +10,6 @@ interface playerProps {
   player: Player[];
   gameBoardList: string[];
   playerxTurn: boolean;
-  playerSymbol: string;
   gameIsRunning: boolean;
   someoneWon: boolean;
 }
@@ -64,13 +63,6 @@ const handleBoxValue = (index: number) => {
   }
 };
 
-// watchEffect(() => {
-//   window.localStorage.setItem(
-//     "gameBoardList",
-//     JSON.stringify(props.gameBoardList)
-//   );
-// });
-
 const winCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -104,6 +96,7 @@ const checkDraw = (boxList: Array<string>) => {
   <section class="scoreBox">
     <ScoreTracker v-for="score in player" :score="score"></ScoreTracker>
   </section>
+  <!-- MessageBox nedan skulle jag vilja ha i en egen komponent men hann inte för måste springa till jobbet :) -->
   <section class="messageBox">
     <div v-if="!someoneWon" class="messageBox--running">
       <h2>{{ player[0].name }}(X) VS {{ player[1].name }} (O)</h2>
@@ -117,7 +110,6 @@ const checkDraw = (boxList: Array<string>) => {
     <GamePresentation
       v-for="(box, index) in gameBoardList"
       :player-turn="playerxTurn"
-      :player-symbol="playerSymbol"
       :game-is-running="gameIsRunning"
       :box="box"
       :index="index"

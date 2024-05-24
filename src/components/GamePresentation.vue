@@ -1,26 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
 interface playerTurn {
   playerTurn: boolean;
-  playerSymbol: string;
   gameIsRunning: boolean;
   box: string;
   index: number;
 }
-const props = defineProps<playerTurn>();
+defineProps<playerTurn>();
 
-let currentPlayerSymbol = ref(props.box);
 const emit = defineEmits<{
   (e: "switchTurn"): void;
   (e: "handleBoxValue"): void;
 }>();
-
-// const handleClick = () => {
-//   if (props.gameIsRunning) {
-//     emit("handleBoxValue");
-//     //emit("switchTurn");
-//   }
-// };
 </script>
 
 <template>

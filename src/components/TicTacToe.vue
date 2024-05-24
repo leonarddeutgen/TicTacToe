@@ -10,7 +10,6 @@ const state = ref<TicTacState>({
   playerList: [],
   gameBoardList: [],
   playerxTurn: false,
-  playerSymbol: "",
   gameIsRunning: true,
   someoneWon: false,
   isDraw: false,
@@ -133,7 +132,6 @@ watchEffect(() => {
     :player="state.playerList"
     :game-board-list="state.gameBoardList"
     :playerx-turn="state.playerxTurn"
-    :player-symbol="state.playerSymbol"
     :game-is-running="state.gameIsRunning"
     :someone-won="state.someoneWon"
     @switch-turn="switchTurn"
