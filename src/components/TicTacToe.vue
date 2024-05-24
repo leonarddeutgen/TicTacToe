@@ -36,6 +36,7 @@ const createNewPlayer = (playerName: string) => {
   state.value.playerList.push(new Player(playerName));
 };
 
+//Håll koll på PlayerList
 watch(
   () => state.value.playerList,
   (value) => {

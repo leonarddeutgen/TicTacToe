@@ -103,7 +103,7 @@ const checkDraw = (boxList: Array<string>) => {
   </section>
   <section class="messageBox">
     <div v-if="!someoneWon" class="messageBox--running">
-      <h2>{{ player[0].name }} VS {{ player[1].name }}</h2>
+      <h2>{{ player[0].name }}(X) VS {{ player[1].name }} (O)</h2>
       <h3>{{ playerxTurn ? "Spelare X tur" : "Spelare O tur" }}</h3>
     </div>
     <div v-else class="messageBox--done">
