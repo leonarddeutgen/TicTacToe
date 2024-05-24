@@ -45,7 +45,7 @@ const handleBoxValue = (index: number) => {
 
   if (!props.gameBoardList[index]) {
     props.gameBoardList[index] = currentSymbol;
-    emit("switchTurn");
+    //emit("switchTurn");
 
     if (checkWinner(currentSymbol, props.gameBoardList as string[])) {
       message.value = currentSymbol + " Har vunnit";

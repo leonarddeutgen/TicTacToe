@@ -17,30 +17,8 @@ const emit = defineEmits<{
 
 const handleClick = () => {
   if (props.gameIsRunning) {
-    //Gör inget ifall currentPlayerSymbol har ett värde
-    // if (
-    //   currentPlayerSymbol.value === "X" ||
-    //   currentPlayerSymbol.value === "O"
-    // ) {
-    //   return;
-    // }
-
-    // let updateSymbol;
-    // if (props.playerTurn && currentPlayerSymbol.value != "X") {
-    //   updateSymbol = "X";
-    //   console.log(props.box);
-    // } else if (!props.playerTurn && currentPlayerSymbol.value != "O") {
-    //   updateSymbol = "O";
-    // }
-
-    // if (updateSymbol) {
-    //   currentPlayerSymbol.value = updateSymbol;
-    //   emit("handleBoxValue", currentPlayerSymbol.value);
-    //   emit("switchTurn");
-    // }
-
     emit("handleBoxValue");
-    emit("switchTurn");
+    //emit("switchTurn");
   }
 };
 </script>
